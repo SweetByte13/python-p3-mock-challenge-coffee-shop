@@ -48,7 +48,20 @@ class Customer:
     @classmethod
     def add_new_customer(cls, new_customer):
         cls.all.append(new_customer)   
+        
+    def orders_for_specific_coffee(self, coffee):
+        return [order for order in self.orders() if order.coffee == coffee]
+        
+    def total_for_specific_coffee(self,coffee):
+        return sum(order.price for order in self.orders_for_specific_coffee(coffee))
          
+    @classmethod
+    def most_aficionado(cls, coffee):
+        if coffee.orders():
+            return max(cls.all, key=lambda customer: customer.total_for_specific_coffee(coffee))
+        else: 
+            return None
+     
     @property
     def name(self):
         return self._name
