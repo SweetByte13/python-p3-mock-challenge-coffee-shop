@@ -87,10 +87,10 @@ class Order:
     all=[]
     
     def __init__(self, customer, coffee, price):
-            self._price = price
-            self._customer = customer
-            self._coffee = coffee
-            Order.add_new_order(self)
+        self.price = price
+        self.customer = customer
+        self.coffee = coffee
+        Order.add_new_order(self)
             
     @classmethod
     def add_new_order(cls, new_order):
@@ -110,15 +110,15 @@ class Order:
         return self._customer
     
     @customer.setter
-    def customer(self,customer):
-        if isinstance(self, Customer):
-            self._customer = customer
+    def customer(self,new_customer):
+        if isinstance(new_customer, Customer):
+            self._customer=new_customer
             
     @property
     def coffee(self):
         return self._coffee
         
     @coffee.setter
-    def coffee(self,coffee):
-        if isinstance(self, Coffee):
-            self._coffee = coffee
+    def coffee(self,new_coffee):
+        if isinstance(new_coffee, Coffee):
+            self._coffee=new_coffee
