@@ -17,24 +17,27 @@ class Coffee:
     def name(self, new_name):
         if not hasattr(self,'_name') and isinstance(new_name, str) and 3 <= len(new_name):
             self._name = new_name
-            
+
     def orders(self):
         return [order for order in Order.all if order.coffee == self]
     
     def customers(self):
-        unique_list = set([order.customer for order in Order.all if order.coffee == self])
-        return list(unique_list)
+        return list({order.customer for order in self.orders()})
+        # unique_list = set([order.customer for order in Order.all if order.coffee == self])
+        # return list(unique_list)
     
     def num_orders(self):
-         count_of_orders=[order.coffee for order in Order.all if order.coffee == self]
-         return len(count_of_orders)
-    
+        return len(self.orders())
+        # return len([order.coffee for order in Order.all if order.coffee == self])
+
     def average_price(self):
-        price_total = [order.price for order in Order.all if order.coffee == self]
-        return(sum(price_total)/len(price_total))
-         
-
-
+        # return sum(order.price for order in self.orders()) / self.num_orders() if slef.num_orders() > 0 else 0 
+        if self.num_orders() > 0:
+            prices = [order.price for order in Order.all if order.coffee == self]
+            return(sum(prices)/len(prices)) 
+        else:
+            return 0
+        
 class Customer:
     all=[]
     
@@ -59,14 +62,14 @@ class Customer:
         return [order for order in Order.all if order.customer == self]
     
     def coffees(self):
-        unique_list = set([order.coffee for order in Order.all if order.customer == self])
-        return list(unique_list)
+        return list({order.coffee for order in self.orders()})
+        # unique_list = set([order.coffee for order in Order.all if order.customer == self])
+        # return list(unique_list)
     
     def create_order(self, coffee, price):
-        new_order = Order(self, coffee, price)
-        return new_order
-    
-    
+        return Order(self, coffee, price)
+    # can do this because in correct order,allowed because keyword argu. otherwise have to do (coffee=cofffee,customer=self,price=price)
+         
 class Order:
     all=[]
     
@@ -106,5 +109,3 @@ class Order:
     def coffee(self,coffee):
         if isinstance(self, Coffee):
             self._coffee = coffee
-            
-    
